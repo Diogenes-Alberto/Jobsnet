@@ -22,7 +22,7 @@ namespace projeto_gama_jobsnet.Controllers
 
         // GET: Candidatos
         [HttpGet]
-        [Route("/Candidatos")]
+        [Route("/candidatos")]
         public async Task<IActionResult> Index()
         {
             return StatusCode(200, await _context.Candidatos.ToListAsync());
@@ -32,12 +32,19 @@ namespace projeto_gama_jobsnet.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Route("/Candidatos")]
+        [Route("/candidatos")]
         public async Task<IActionResult> Create(
             [Bind("CandidatoId,NomeCandidato,EstadoCivil,Genero,DataNascimento,Cep,Endereco,"+
            "Numero,Complemento,Bairro,Cidade,UF,TelefoneFixo,TelefoneMovel,EmailCandidato,"+
            "Cpf,RG,PossuiVeiculo,TipoHabilitacao,VagaId")] Candidato candidato)
         {
+
+            if(_context.Candidatos.Any(x => x.Cpf.Equals(candidato.Cpf)))
+            {
+                return StatusCode(401, new {
+                    Mensagem = $"Já existe um Candidato criado com o CPF {candidato.Cpf}"
+                });
+            }
             
             _context.Add(candidato);
             await _context.SaveChangesAsync();
@@ -47,7 +54,7 @@ namespace projeto_gama_jobsnet.Controllers
 
         
         [HttpPut]
-        [Route("/Candidatos/{id}")]
+        [Route("/candidatos/{id}")]
         public async Task<IActionResult> Edit(
             int id, [Bind("CandidatoId,NomeCandidato,EstadoCivil,Genero,DataNascimento,Cep,Endereco,"+
            "Numero,Complemento,Bairro,Cidade,UF,TelefoneFixo,TelefoneMovel,EmailCandidato,"+
@@ -56,6 +63,12 @@ namespace projeto_gama_jobsnet.Controllers
             if (id != candidato.CandidatoId)
             {
                 return NotFound();
+            }
+            if(_context.Candidatos.Any(x => x.Cpf.Equals(candidato.Cpf)&&x.CandidatoId!=candidato.CandidatoId))
+            {
+                return StatusCode(401, new {
+                    Mensagem = $"Já existe um Candidato criado com o CPF {candidato.Cpf}"
+                });
             }
 
             try
@@ -79,7 +92,7 @@ namespace projeto_gama_jobsnet.Controllers
 
         // POST: Candidatos/Delete/5
         [HttpDelete]
-        [Route("/Candidatos/{id}")]
+        [Route("/candidatos/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var candidato = await _context.Candidatos.FindAsync(id);
@@ -89,7 +102,7 @@ namespace projeto_gama_jobsnet.Controllers
         }
 
         [HttpGet]
-        [Route("/Candidatos/{id}")]
+        [Route("/candidatos/{id}")]
         public async Task<Candidato> Get(int id)
         {
             var candidato = await _context.Candidatos.FindAsync(id);

@@ -22,7 +22,7 @@ namespace projeto_gama_jobsnet.Controllers
 
         // GET: Vagas
         [HttpGet]
-        [Route("/Vagas")]
+        [Route("/vagas")]
         public async Task<IActionResult> Index()
         {
             return StatusCode(200, await _context.Vagas.ToListAsync());
@@ -32,9 +32,15 @@ namespace projeto_gama_jobsnet.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Route("/Vagas")]
+        [Route("/vagas")]
         public async Task<IActionResult> Create([Bind("VagaId,nomeVaga,DescricaoVaga")] Vaga vaga)
         {
+            if(_context.Vagas.Any(x => x.NomeVaga.Equals(vaga.NomeVaga)))
+            {
+                return StatusCode(401, new {
+                    Mensagem = $"Já existe uma profissão criada com o nome {vaga.NomeVaga}"
+                });
+            }
             
             _context.Add(vaga);
             await _context.SaveChangesAsync();
@@ -44,12 +50,19 @@ namespace projeto_gama_jobsnet.Controllers
 
         
         [HttpPut]
-        [Route("/Vagas/{id}")]
+        [Route("/vagas/{id}")]
         public async Task<IActionResult> Edit(int id, [Bind("VagaId,nomeVaga,DescricaoVaga")] Vaga vaga)
         {
             if (id != vaga.VagaId)
             {
                 return NotFound();
+            }
+
+            if(_context.Vagas.Any(x => x.NomeVaga.Equals(vaga.NomeVaga)&&x.VagaId!=vaga.VagaId))
+            {
+                return StatusCode(401, new {
+                    Mensagem = $"Já existe uma profissão criada com o nome {vaga.NomeVaga}"
+                });
             }
 
             try
@@ -73,7 +86,7 @@ namespace projeto_gama_jobsnet.Controllers
 
         // POST: Vagas/Delete/5
         [HttpDelete]
-        [Route("/Vagas/{id}")]
+        [Route("/vagas/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var vaga = await _context.Vagas.FindAsync(id);
@@ -83,7 +96,7 @@ namespace projeto_gama_jobsnet.Controllers
         }
 
         [HttpGet]
-        [Route("/Vagas/{id}")]
+        [Route("/vagas/{id}")]
         public async Task<Vaga> Get(int id)
         {
             var vaga = await _context.Vagas.FindAsync(id);

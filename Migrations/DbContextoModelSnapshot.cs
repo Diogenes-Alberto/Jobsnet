@@ -33,6 +33,9 @@ namespace projeto_gama_jobsnet.Migrations
                         .HasColumnType("varchar(25)")
                         .HasColumnName("bairro");
 
+                    b.Property<int?>("CargoVagaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Cep")
                         .IsRequired()
                         .HasMaxLength(14)
@@ -55,6 +58,10 @@ namespace projeto_gama_jobsnet.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)")
                         .HasColumnName("cpf");
+
+                    b.Property<DateTime>("DataNascimento")
+                        .HasColumnType("date")
+                        .HasColumnName("data_nascimento");
 
                     b.Property<string>("EmailCandidato")
                         .HasMaxLength(50)
@@ -121,19 +128,32 @@ namespace projeto_gama_jobsnet.Migrations
                         .HasColumnType("varchar(2)")
                         .HasColumnName("uf");
 
+                    b.HasKey("CandidatoId");
+
+                    b.HasIndex("CargoVagaId");
+
+                    b.ToTable("candidatos");
+                });
+
+            modelBuilder.Entity("projeto_gama_jobsnet.Models.Candidatura", b =>
+                {
+                    b.Property<int>("CandidaturaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("candidatura_id")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("CandidatoId")
+                        .HasColumnType("int")
+                        .HasColumnName("candidato_id");
+
                     b.Property<int>("VagaId")
                         .HasColumnType("int")
                         .HasColumnName("vaga_id");
 
-                    b.Property<DateTime>("dataNascimento")
-                        .HasColumnType("date")
-                        .HasColumnName("data_nascimento");
+                    b.HasKey("CandidaturaId");
 
-                    b.HasKey("CandidatoId");
-
-                    b.HasIndex("VagaId");
-
-                    b.ToTable("candidatos");
+                    b.ToTable("candidaturas");
                 });
 
             modelBuilder.Entity("projeto_gama_jobsnet.Models.Vaga", b =>
@@ -149,7 +169,7 @@ namespace projeto_gama_jobsnet.Migrations
                         .HasColumnType("text")
                         .HasColumnName("descricao_vaga");
 
-                    b.Property<string>("nomeVaga")
+                    b.Property<string>("NomeVaga")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("varchar(40)")
@@ -164,9 +184,7 @@ namespace projeto_gama_jobsnet.Migrations
                 {
                     b.HasOne("projeto_gama_jobsnet.Models.Vaga", "Cargo")
                         .WithMany()
-                        .HasForeignKey("VagaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CargoVagaId");
 
                     b.Navigation("Cargo");
                 });

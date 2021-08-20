@@ -35,8 +35,8 @@ namespace projeto_gama_jobsnet.Controllers
         [Route("/vagas")]
         public async Task<IActionResult> Create([Bind("VagaId,nomeVaga,DescricaoVaga")] Vaga vaga)
         {
-            //verifica se já existe algum valor no BD igual ao que quero registrar
-            if(_context.Vagas.Any(x => x.NomeVaga.Equals(vaga.NomeVaga)))
+            bool validado = await _context.Vagas.AnyAsync(x => x.NomeVaga.Equals(vaga.NomeVaga));
+            if(validado)
             {
                 return StatusCode(401, new {
                     Mensagem = $"Já existe uma profissão criada com o nome {vaga.NomeVaga}"
@@ -58,9 +58,10 @@ namespace projeto_gama_jobsnet.Controllers
             {
                 return NotFound();
             }
-            //verifica se já existe algum valor no BD igual ao que quero alterar
-            //mas tambem verifica se nao e o mesmo objeto
-            if(_context.Vagas.Any(x => x.NomeVaga.Equals(vaga.NomeVaga)&&x.VagaId!=vaga.VagaId))
+
+            bool validado= _context.Vagas.Any(x => x.NomeVaga.Equals(vaga.NomeVaga)&&x.VagaId!=vaga.VagaId) ;
+
+            if(validado)
             {
                 return StatusCode(401, new {
                     Mensagem = $"Já existe uma profissão criada com o nome {vaga.NomeVaga}"

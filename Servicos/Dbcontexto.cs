@@ -10,5 +10,7 @@ namespace projeto_gama_jobsnet.Servicos
 
     public DbSet<Vaga> Vagas { get; set; }
     public DbSet<Candidato> Candidatos{get; set;}
+    public DbSet<Candidatura> Candidaturas{get; set;}
+
   }
 }

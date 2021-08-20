@@ -23,7 +23,8 @@ namespace projeto_gama_jobsnet.Apresentacao
               {
                   "/vagas",
                   "/candidatos",
-                  "/swagger"
+                  "/swagger",
+                  "/Candidatura"
               };
           }
       }

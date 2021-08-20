@@ -112,11 +112,6 @@ namespace projeto_gama_jobsnet.Models
     [MaxLength(20)]
     public String TipoHabilitacao{get; set;}
 
-    [Column("vaga_id", TypeName = "int")]
-    [ForeignKey("VagaId")]
-    [Required(ErrorMessage="Campo Vaga id é obrigatório")]
-    public int VagaId{get; set;}
-
     [JsonIgnore]
     public Vaga Cargo { get;set; }
 

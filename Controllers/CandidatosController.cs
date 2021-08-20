@@ -36,7 +36,7 @@ namespace projeto_gama_jobsnet.Controllers
         public async Task<IActionResult> Create(
             [Bind("CandidatoId,NomeCandidato,EstadoCivil,Genero,DataNascimento,Cep,Endereco,"+
            "Numero,Complemento,Bairro,Cidade,UF,TelefoneFixo,TelefoneMovel,EmailCandidato,"+
-           "Cpf,RG,PossuiVeiculo,TipoHabilitacao,VagaId")] Candidato candidato)
+           "Cpf,RG,PossuiVeiculo,TipoHabilitacao")] Candidato candidato)
         {
             if(candidato.CpfValido())
             {
@@ -69,7 +69,7 @@ namespace projeto_gama_jobsnet.Controllers
         public async Task<IActionResult> Edit(
             int id, [Bind("CandidatoId,NomeCandidato,EstadoCivil,Genero,DataNascimento,Cep,Endereco,"+
            "Numero,Complemento,Bairro,Cidade,UF,TelefoneFixo,TelefoneMovel,EmailCandidato,"+
-           "Cpf,RG,PossuiVeiculo,TipoHabilitacao,VagaId")] Candidato candidato)
+           "Cpf,RG,PossuiVeiculo,TipoHabilitacao")] Candidato candidato)
         {
             if (id != candidato.CandidatoId)
             {

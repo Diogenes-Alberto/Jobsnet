@@ -35,6 +35,7 @@ namespace projeto_gama_jobsnet.Controllers
         [Route("/vagas")]
         public async Task<IActionResult> Create([Bind("VagaId,nomeVaga,DescricaoVaga")] Vaga vaga)
         {
+            //verifica se já existe algum valor no BD igual ao que quero registrar
             if(_context.Vagas.Any(x => x.NomeVaga.Equals(vaga.NomeVaga)))
             {
                 return StatusCode(401, new {
@@ -57,7 +58,8 @@ namespace projeto_gama_jobsnet.Controllers
             {
                 return NotFound();
             }
-
+            //verifica se já existe algum valor no BD igual ao que quero alterar
+            //mas tambem verifica se nao e o mesmo objeto
             if(_context.Vagas.Any(x => x.NomeVaga.Equals(vaga.NomeVaga)&&x.VagaId!=vaga.VagaId))
             {
                 return StatusCode(401, new {

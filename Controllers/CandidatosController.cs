@@ -38,13 +38,24 @@ namespace projeto_gama_jobsnet.Controllers
            "Numero,Complemento,Bairro,Cidade,UF,TelefoneFixo,TelefoneMovel,EmailCandidato,"+
            "Cpf,RG,PossuiVeiculo,TipoHabilitacao,VagaId")] Candidato candidato)
         {
-
-            if(_context.Candidatos.Any(x => x.Cpf.Equals(candidato.Cpf)))
+            if(candidato.CpfValido())
+            {
+                //verifica se já existe algum valor no BD igual ao que quero registrar
+                bool validado = await _context.Candidatos.AnyAsync(x => x.Cpf.Equals(candidato.Cpf));
+                if(validado)
+                {
+                    return StatusCode(401, new {
+                        Mensagem = $"Já existe um Candidato criado com o CPF {candidato.Cpf}"
+                    });
+                }
+            }
+            else
             {
                 return StatusCode(401, new {
-                    Mensagem = $"Já existe um Candidato criado com o CPF {candidato.Cpf}"
+                    Mensagem = $"o Cpf digitado e invalido {candidato.Cpf}"
                 });
             }
+            
             
             _context.Add(candidato);
             await _context.SaveChangesAsync();
@@ -64,7 +75,18 @@ namespace projeto_gama_jobsnet.Controllers
             {
                 return NotFound();
             }
-            if(_context.Candidatos.Any(x => x.Cpf.Equals(candidato.Cpf)&&x.CandidatoId!=candidato.CandidatoId))
+            //verifica se já existe algum valor no BD igual ao que quero alterar
+            //mas tambem verifica se nao e o mesmo objeto
+            
+            if(candidato.CpfValido())
+            {
+                return StatusCode(401, new {
+                    Mensagem = $"o Cpf digitado e invalido {candidato.Cpf}"
+                });
+            }
+            //recebe a confirmaçao do await na verificaçao dos dados
+            bool validado = await _context.Candidatos.AnyAsync(x => x.Cpf.Equals(candidato.Cpf));
+            if(validado)
             {
                 return StatusCode(401, new {
                     Mensagem = $"Já existe um Candidato criado com o CPF {candidato.Cpf}"

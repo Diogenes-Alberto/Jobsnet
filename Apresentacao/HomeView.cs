@@ -22,7 +22,8 @@ namespace projeto_gama_jobsnet.Apresentacao
               return new List<string>()
               {
                   "/vagas",
-                  "/candidatos"
+                  "/candidatos",
+                  "/swagger"
               };
           }
       }

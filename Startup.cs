@@ -33,7 +33,7 @@ namespace projeto_gama_jobsnet
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "projeto_gama_jobsnet", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "JobsNet api", Version = "v1" });
             });
         }
 

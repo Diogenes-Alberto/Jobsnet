@@ -84,7 +84,7 @@ namespace projeto_gama_jobsnet.Controllers
                     Mensagem = $"o Cpf digitado e invalido {candidato.Cpf}"
                 });
             }
-            //recebe a confirmaçao do await na verificaçao dos dados
+            //recebe a confirmaçao do await na verificaçao dos dados se possui um cpf ja registrado
             bool validado = await _context.Candidatos.AnyAsync(x => x.Cpf.Equals(candidato.Cpf));
             if(validado)
             {
